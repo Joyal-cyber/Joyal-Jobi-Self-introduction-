@@ -1,0 +1,815 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joyal Jobi | Aspiring Software Engineer & Cyber Enthusiast</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: JetBrains Mono & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        cyber: {
+                            bg: '#0a0d14',
+                            card: 'rgba(17, 24, 39, 0.7)',
+                            border: '#1e293b',
+                            cyan: '#06b6d4',
+                            blue: '#3b82f6',
+                            emerald: '#10b981',
+                            purple: '#a855f7'
+                        }
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 3s infinite alternate',
+                        'float': 'float 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%': { boxShadow: '0 0 15px rgba(6, 182, 212, 0.2)' },
+                            '100%': { boxShadow: '0 0 30px rgba(6, 182, 212, 0.6)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Cyber grid background layer */
+        .cyber-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        /* Glassmorphism styling */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: var(--accent-color, #06b6d4);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.25);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0d14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+
+        /* Neon Glow Text */
+        .text-glow {
+            text-shadow: 0 0 12px var(--glow-color, rgba(6, 182, 212, 0.5));
+        }
+
+        /* Terminal Cursor */
+        .cursor-blink {
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-cyber-bg text-slate-200 font-sans min-h-screen relative overflow-x-hidden cyber-grid selection:bg-cyan-500 selection:text-black">
+
+    <!-- Dynamic Canvas Particle Background -->
+    <canvas id="particleCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+
+    <!-- Top Navigation -->
+    <nav class="sticky top-0 z-50 glass-panel border-b border-slate-800/80 px-4 lg:px-8 py-3 transition-all duration-300">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-mono font-bold text-slate-950 text-xl shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
+                    JJ
+                </div>
+                <div>
+                    <span class="font-mono font-bold text-white text-lg tracking-tight flex items-center gap-1">
+                        JOYAL<span class="text-cyan-400">.JOBI</span>
+                    </span>
+                    <span class="text-[10px] font-mono text-slate-400 block -mt-1 tracking-widest uppercase">Cyber Portfolio</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <div class="hidden md:flex items-center gap-8 font-mono text-sm">
+                <a href="#about" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-1.5"><span class="text-cyan-500 text-xs">01.</span> About</a>
+                <a href="#skills" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-1.5"><span class="text-cyan-500 text-xs">02.</span> Skills</a>
+                <a href="#journey" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-1.5"><span class="text-cyan-500 text-xs">03.</span> Education & Sports</a>
+                <a href="#contact" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-1.5"><span class="text-cyan-500 text-xs">04.</span> Contact</a>
+            </div>
+
+            <!-- Theme Accent Switcher & Mobile Menu Toggle -->
+            <div class="flex items-center gap-3">
+                <!-- Theme Color Selector -->
+                <div class="hidden sm:flex items-center gap-1.5 bg-slate-900/80 p-1.5 rounded-full border border-slate-800">
+                    <button onclick="setTheme('cyan')" class="w-4 h-4 rounded-full bg-cyan-400 ring-2 ring-transparent focus:ring-white transition" title="Cyan Theme"></button>
+                    <button onclick="setTheme('emerald')" class="w-4 h-4 rounded-full bg-emerald-400 ring-2 ring-transparent focus:ring-white transition" title="Emerald Theme"></button>
+                    <button onclick="setTheme('purple')" class="w-4 h-4 rounded-full bg-purple-400 ring-2 ring-transparent focus:ring-white transition" title="Purple Theme"></button>
+                </div>
+
+                <a href="#contact" class="hidden sm:inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-mono font-semibold px-4 py-2 rounded-lg text-sm transition-all shadow-md shadow-cyan-500/20 active:scale-95">
+                    <i class="fa-solid fa-paper-plane text-xs"></i> Reach Out
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-300 hover:text-white rounded-lg hover:bg-slate-800/60 focus:outline-none">
+                    <i id="menuIcon" class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobileMenu" class="hidden md:hidden max-w-6xl mx-auto pt-4 pb-2 px-2 flex flex-col gap-3 font-mono text-sm border-t border-slate-800/80 mt-3">
+            <a href="#about" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-cyan-400 p-2 rounded-lg hover:bg-slate-800/40"><span class="text-cyan-500">01.</span> About Me</a>
+            <a href="#skills" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-cyan-400 p-2 rounded-lg hover:bg-slate-800/40"><span class="text-cyan-500">02.</span> Skills</a>
+            <a href="#journey" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-cyan-400 p-2 rounded-lg hover:bg-slate-800/40"><span class="text-cyan-500">03.</span> Education & Sports</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-cyan-400 p-2 rounded-lg hover:bg-slate-800/40"><span class="text-cyan-500">04.</span> Contact</a>
+            
+            <div class="flex items-center justify-between pt-2 border-t border-slate-800/50">
+                <span class="text-xs text-slate-400">Color Accent:</span>
+                <div class="flex items-center gap-2">
+                    <button onclick="setTheme('cyan')" class="px-2 py-1 rounded bg-cyan-950 text-cyan-400 border border-cyan-800 text-xs">Cyan</button>
+                    <button onclick="setTheme('emerald')" class="px-2 py-1 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs">Green</button>
+                    <button onclick="setTheme('purple')" class="px-2 py-1 rounded bg-purple-950 text-purple-400 border border-purple-800 text-xs">Purple</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 lg:px-8 relative z-10 space-y-24 py-12">
+
+        <!-- HERO SECTION -->
+        <section class="min-h-[80vh] flex flex-col justify-center items-start pt-6">
+            <!-- Badge Banner -->
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-cyan-500/30 text-cyan-400 font-mono text-xs sm:text-sm mb-6 animate-pulse-glow">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                </span>
+                <span>Student at Jawahar Navodaya Vidyalaya</span>
+            </div>
+
+            <!-- Title Header -->
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-none mb-4">
+                Hi, I'm <span id="heroName" class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-400">Joyal Jobi</span>
+            </h1>
+
+            <!-- Animated Typing Subtitle -->
+            <div class="h-12 sm:h-16 flex items-center mb-6">
+                <h2 class="text-xl sm:text-3xl text-slate-300 font-mono font-medium">
+                    I am <span id="typingText" class="text-cyan-400 font-semibold"></span><span class="cursor-blink text-cyan-400">|</span>
+                </h2>
+            </div>
+
+            <!-- Summary Text -->
+            <p class="max-w-2xl text-slate-400 text-base sm:text-lg leading-relaxed mb-8">
+                Fueled by curiosity in technology, cyber space, and software systems. 
+                Constantly learning, writing code in Python & HTML, and breaking boundaries in athletics.
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap items-center gap-4 w-full sm:w-auto">
+                <a href="#contact" class="w-full sm:w-auto text-center bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-mono font-bold px-7 py-3.5 rounded-xl transition-all shadow-lg shadow-cyan-500/25 active:scale-95 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Get In Touch
+                </a>
+                <a href="#skills" class="w-full sm:w-auto text-center glass-panel border border-slate-700 hover:border-cyan-500/50 text-slate-200 hover:text-cyan-400 font-mono font-semibold px-7 py-3.5 rounded-xl transition-all hover:bg-slate-800/50 active:scale-95 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-code"></i> View Skills
+                </a>
+            </div>
+
+            <!-- Quick Stats Bar -->
+            <div class="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 w-full pt-8 border-t border-slate-800/80 font-mono">
+                <div class="p-3 rounded-xl glass-card">
+                    <span class="text-xs text-slate-400 block mb-1">Education</span>
+                    <span class="text-lg font-bold text-white">JNV Student</span>
+                    <span class="text-[11px] text-cyan-400 block mt-0.5">Since 6th Grade</span>
+                </div>
+                <div class="p-3 rounded-xl glass-card">
+                    <span class="text-xs text-slate-400 block mb-1">Focus Area</span>
+                    <span class="text-lg font-bold text-white">Software & Cyber</span>
+                    <span class="text-[11px] text-cyan-400 block mt-0.5">Python & Web</span>
+                </div>
+                <div class="p-3 rounded-xl glass-card">
+                    <span class="text-xs text-slate-400 block mb-1">Sports</span>
+                    <span class="text-lg font-bold text-white">Athletics</span>
+                    <span class="text-[11px] text-emerald-400 block mt-0.5">Medal Winner <i class="fa-solid fa-medal text-xs"></i></span>
+                </div>
+                <div class="p-3 rounded-xl glass-card">
+                    <span class="text-xs text-slate-400 block mb-1">Current Age</span>
+                    <span id="ageDisplay" class="text-lg font-bold text-white">-- Yrs</span>
+                    <span class="text-[11px] text-cyan-400 block mt-0.5">Born June 18, 2012</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT ME SECTION -->
+        <section id="about" class="scroll-mt-24">
+            <div class="flex items-center gap-3 mb-8">
+                <span class="font-mono text-cyan-400 text-lg font-bold">01.</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">About Me</h2>
+                <div class="h-[1px] bg-slate-800 flex-1 ml-4"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                <!-- Main Bio Card -->
+                <div class="lg:col-span-7 glass-panel p-6 sm:p-8 rounded-2xl flex flex-col justify-between border-l-4 border-l-cyan-500">
+                    <div class="space-y-4 text-slate-300 leading-relaxed text-base">
+                        <p class="first-letter:text-4xl first-letter:font-bold first-letter:text-cyan-400 first-letter:mr-2 first-letter:float-left">
+                            Hello! I’m <strong class="text-white">Joyal Jobi</strong>, a passionate tech enthusiast born on <span class="text-cyan-300 font-mono">June 18, 2012</span>. My educational journey took a giant leap when I joined <strong class="text-white">Jawahar Navodaya Vidyalaya (JNV)</strong> in the 6th class, an environment that nurtured my curiosity for both technology and disciplined growth.
+                        </p>
+                        <p>
+                            I get a real thrill exploring the fascinating world of software development and cyber security. To me, coding isn't just a subject—it's a digital playground where I can solve problems, automate tasks, and build cool projects from scratch.
+                        </p>
+                        <p>
+                            Beyond lines of code, I am an active sports competitor with a passionate drive for <strong class="text-white">Athletics</strong>, where I have earned multiple medals. Whether on the track or at my keyboard, I strive for speed, excellence, and consistency.
+                        </p>
+                    </div>
+
+                    <!-- Personal Mantra -->
+                    <div class="mt-6 p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex items-start gap-3">
+                        <i class="fa-solid fa-quote-left text-cyan-500 text-xl mt-1"></i>
+                        <p class="text-sm font-mono text-slate-400 italic">
+                            "Driven by cyber thrills, powered by Python code, and trained for athletic victory."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Info Grid & Badges -->
+                <div class="lg:col-span-5 flex flex-col gap-4">
+                    <!-- Navodaya Badge Card -->
+                    <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                        <div class="absolute -right-6 -bottom-6 text-slate-800/40 group-hover:text-cyan-500/10 transition-colors">
+                            <i class="fa-solid fa-graduation-cap text-9xl"></i>
+                        </div>
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl">
+                                <i class="fa-solid fa-school"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-white font-bold font-mono">Navodaya Life</h3>
+                                <p class="text-xs text-slate-400">Jawahar Navodaya Vidyalaya</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-300 relative z-10">
+                            Studying in JNV since Class 6. The residential school life has instilled strong teamwork, independence, and focus in my daily life.
+                        </p>
+                    </div>
+
+                    <!-- Cyber Goal Card -->
+                    <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+                        <div class="absolute -right-6 -bottom-6 text-slate-800/40 group-hover:text-blue-500/10 transition-colors">
+                            <i class="fa-solid fa-user-shield text-9xl"></i>
+                        </div>
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl">
+                                <i class="fa-solid fa-laptop-code"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-white font-bold font-mono">Career Goal</h3>
+                                <p class="text-xs text-slate-400">Future Software Engineer</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-300 relative z-10">
+                            Aiming to engineer secure, efficient software applications and deepen my expertise in cyber defense and computer systems.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS & CAPABILITIES SECTION -->
+        <section id="skills" class="scroll-mt-24">
+            <div class="flex items-center gap-3 mb-8">
+                <span class="font-mono text-cyan-400 text-lg font-bold">02.</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Skills & Capabilities</h2>
+                <div class="h-[1px] bg-slate-800 flex-1 ml-4"></div>
+            </div>
+
+            <!-- Skills Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Python Skill Card -->
+                <div class="glass-card p-6 rounded-2xl relative">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400 text-2xl">
+                            <i class="fa-brands fa-python"></i>
+                        </div>
+                        <span class="text-xs font-mono bg-yellow-500/20 text-yellow-300 px-2.5 py-1 rounded-full border border-yellow-500/30">Primary Language</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 font-mono">Python Programming</h3>
+                    <p class="text-sm text-slate-400 mb-4">Logic building, scripts, basic algorithms, data structures, and problem-solving concepts.</p>
+                    
+                    <!-- Progress Bar -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-400">Proficiency</span>
+                            <span class="text-yellow-400">Intermediate</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-yellow-500 to-amber-400 rounded-full w-[75%]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HTML & Web Dev Card -->
+                <div class="glass-card p-6 rounded-2xl relative">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 text-2xl">
+                            <i class="fa-brands fa-html5"></i>
+                        </div>
+                        <span class="text-xs font-mono bg-orange-500/20 text-orange-300 px-2.5 py-1 rounded-full border border-orange-500/30">Frontend</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 font-mono">HTML & Web Basics</h3>
+                    <p class="text-sm text-slate-400 mb-4">Structuring web pages, markup syntax, forms, responsive elements, and layout foundations.</p>
+                    
+                    <!-- Progress Bar -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-400">Proficiency</span>
+                            <span class="text-orange-400">Fluent Structure</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-orange-500 to-amber-500 rounded-full w-[80%]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cyber Security Card -->
+                <div class="glass-card p-6 rounded-2xl relative">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <span class="text-xs font-mono bg-cyan-500/20 text-cyan-300 px-2.5 py-1 rounded-full border border-cyan-500/30">Exploration</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 font-mono">Cyber Security Thrills</h3>
+                    <p class="text-sm text-slate-400 mb-4">Understanding network basics, digital security principles, web safety, and system concepts.</p>
+                    
+                    <!-- Progress Bar -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-400">Interest Level</span>
+                            <span class="text-cyan-400">Very High 🔥</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full w-[90%]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Athletic Performance Card -->
+                <div class="glass-card p-6 rounded-2xl relative">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl">
+                            <i class="fa-solid fa-person-running"></i>
+                        </div>
+                        <span class="text-xs font-mono bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-full border border-emerald-500/30">Physical Fitness</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 font-mono">Athletics & Track</h3>
+                    <p class="text-sm text-slate-400 mb-4">Medal winner in athletics meets. Strong focus on endurance, speed, discipline, and training.</p>
+                    
+                    <!-- Progress Bar -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-400">Achievement</span>
+                            <span class="text-emerald-400">Medalist</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full w-[88%]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logic & Problem Solving -->
+                <div class="glass-card p-6 rounded-2xl relative">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-2xl">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                        <span class="text-xs font-mono bg-purple-500/20 text-purple-300 px-2.5 py-1 rounded-full border border-purple-500/30">Mindset</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 font-mono">Problem Solving</h3>
+                    <p class="text-sm text-slate-400 mb-4">Analytical reasoning, algorithmic thinking, and methodical troubleshooting techniques.</p>
+                    
+                    <!-- Progress Bar -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-400">Focus</span>
+                            <span class="text-purple-400">Active</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full w-[82%]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Software Engineering Fundamentals -->
+                <div class="glass-card p-6 rounded-2xl relative">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-2xl">
+                            <i class="fa-solid fa-gears"></i>
+                        </div>
+                        <span class="text-xs font-mono bg-blue-500/20 text-blue-300 px-2.5 py-1 rounded-full border border-blue-500/30">Core Knowledge</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 font-mono">Software Concepts</h3>
+                    <p class="text-sm text-slate-400 mb-4">Understanding code syntax, command line tools, file structures, and computing concepts.</p>
+                    
+                    <!-- Progress Bar -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-400">Growth</span>
+                            <span class="text-blue-400">Continuous</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full w-[80%]"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- EDUCATION & ATHLETICS JOURNEY SECTION -->
+        <section id="journey" class="scroll-mt-24">
+            <div class="flex items-center gap-3 mb-8">
+                <span class="font-mono text-cyan-400 text-lg font-bold">03.</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Education & Achievements</h2>
+                <div class="h-[1px] bg-slate-800 flex-1 ml-4"></div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="relative border-l-2 border-slate-800 ml-4 md:ml-8 space-y-12">
+                
+                <!-- Timeline Item 1: JNV Education -->
+                <div class="relative pl-8 group">
+                    <!-- Dot Marker -->
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-cyan-500 ring-4 ring-slate-950 group-hover:scale-125 transition-transform"></div>
+                    
+                    <div class="glass-panel p-6 rounded-2xl">
+                        <div class="flex flex-wrap justify-between items-center gap-2 mb-2">
+                            <span class="text-xs font-mono text-cyan-400 font-semibold uppercase tracking-wider">Education Journey</span>
+                            <span class="text-xs font-mono text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full">Class 6th – Present</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1">Jawahar Navodaya Vidyalaya</h3>
+                        <p class="text-sm text-cyan-300 mb-3 font-mono">Navodaya Residential Scholar</p>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Selected for admission into JNV from 6th grade. Balancing rigorous academic studies with tech self-learning and active athletic sports participation in a disciplined environment.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 2: Athletics Medals -->
+                <div class="relative pl-8 group">
+                    <!-- Dot Marker -->
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-slate-950 group-hover:scale-125 transition-transform"></div>
+                    
+                    <div class="glass-panel p-6 rounded-2xl">
+                        <div class="flex flex-wrap justify-between items-center gap-2 mb-2">
+                            <span class="text-xs font-mono text-emerald-400 font-semibold uppercase tracking-wider">Sports Milestone</span>
+                            <span class="text-xs font-mono text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full"><i class="fa-solid fa-trophy text-yellow-400 mr-1"></i> Medal Winner</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1">Athletics Competitions & Medals</h3>
+                        <p class="text-sm text-emerald-300 mb-3 font-mono">Track & Field Competitor</p>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Participated in school athletic meets and track events, securing top podium positions and medals through dedicated physical conditioning, speed training, and competitive spirit.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 3: Cyber & Software Journey -->
+                <div class="relative pl-8 group">
+                    <!-- Dot Marker -->
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-purple-500 ring-4 ring-slate-950 group-hover:scale-125 transition-transform"></div>
+                    
+                    <div class="glass-panel p-6 rounded-2xl">
+                        <div class="flex flex-wrap justify-between items-center gap-2 mb-2">
+                            <span class="text-xs font-mono text-purple-400 font-semibold uppercase tracking-wider">Technology Milestone</span>
+                            <span class="text-xs font-mono text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full">Self-Taught</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-1">Python & Cyber Exploration</h3>
+                        <p class="text-sm text-purple-300 mb-3 font-mono">Aspiring Software Engineer</p>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Learned core concepts of HTML for web development and Python for logic scripting. Continually exploring cybersecurity concepts, modern technology, and computer systems.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="scroll-mt-24">
+            <div class="flex items-center gap-3 mb-8">
+                <span class="font-mono text-cyan-400 text-lg font-bold">04.</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Get In Touch</h2>
+                <div class="h-[1px] bg-slate-800 flex-1 ml-4"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Contact Links Column -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="glass-panel p-6 rounded-2xl">
+                        <h3 class="text-xl font-bold text-white mb-2 font-mono">Let's Connect!</h3>
+                        <p class="text-slate-400 text-sm mb-6 leading-relaxed">
+                            Feel free to contact me for collaboration, tech discussions, or cyber security projects!
+                        </p>
+
+                        <!-- Direct Contact List -->
+                        <div class="space-y-4">
+                            <!-- Email Link -->
+                            <a href="mailto:joyaljke1@gmail.com" class="flex items-center gap-4 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/50 hover:bg-slate-800/80 transition-all group">
+                                <div class="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-lg group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <span class="text-xs text-slate-400 font-mono block">Email Me</span>
+                                    <span class="text-sm font-medium text-white truncate block">joyaljke1@gmail.com</span>
+                                </div>
+                            </a>
+
+                            <!-- Instagram Link -->
+                            <a href="https://instagram.com/its_me.joyal" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-pink-500/50 hover:bg-slate-800/80 transition-all group">
+                                <div class="w-10 h-10 rounded-lg bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-pink-400 text-lg group-hover:scale-110 transition-transform">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <span class="text-xs text-slate-400 font-mono block">Instagram Handle</span>
+                                    <span class="text-sm font-medium text-white truncate block">@its_me.joyal</span>
+                                </div>
+                            </a>
+
+                            <!-- Birthday / Info Box -->
+                            <div class="flex items-center gap-4 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                                <div class="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-lg">
+                                    <i class="fa-solid fa-cake-candles"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-slate-400 font-mono block">Date of Birth</span>
+                                    <span class="text-sm font-medium text-white block">June 18, 2012</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Quick Message Form -->
+                <div class="lg:col-span-7">
+                    <form id="contactForm" onsubmit="handleFormSubmit(event)" class="glass-panel p-6 sm:p-8 rounded-2xl space-y-4">
+                        <h3 class="text-xl font-bold text-white mb-2 font-mono flex items-center gap-2">
+                            <i class="fa-solid fa-terminal text-cyan-400 text-base"></i> Send a Quick Message
+                        </h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-mono text-slate-300 mb-1">Your Name</label>
+                                <input type="text" id="formName" required placeholder="John Doe" class="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500 transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-mono text-slate-300 mb-1">Your Email</label>
+                                <input type="email" id="formEmail" required placeholder="name@example.com" class="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500 transition-colors">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-mono text-slate-300 mb-1">Subject</label>
+                            <input type="text" id="formSubject" required placeholder="Software Project / Greeting" class="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500 transition-colors">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-mono text-slate-300 mb-1">Message</label>
+                            <textarea id="formMessage" rows="4" required placeholder="Hi Joyal, I checked out your portfolio website..." class="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500 transition-colors resize-none"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-mono font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-cyan-500/20 active:scale-95 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                    
+                    <!-- Form Status Alert -->
+                    <div id="formStatus" class="hidden mt-4 p-4 rounded-xl font-mono text-sm"></div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800/80 bg-slate-950/80 relative z-10 py-8 px-4 text-center font-mono text-xs text-slate-400">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                <span>Designed & Built for <strong class="text-white">Joyal Jobi</strong></span>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <a href="mailto:joyaljke1@gmail.com" class="hover:text-cyan-400 transition-colors"><i class="fa-solid fa-envelope"></i> Email</a>
+                <a href="https://instagram.com/its_me.joyal" target="_blank" class="hover:text-pink-400 transition-colors"><i class="fa-brands fa-instagram"></i> Instagram</a>
+            </div>
+
+            <p class="text-slate-400">© <span id="yearSpan"></span> Joyal Jobi. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Set current year
+        document.getElementById('yearSpan').textContent = new Date().getFullYear();
+
+        // Calculate exact age dynamically based on 18 June 2012
+        function calculateAge() {
+            const birthDate = new Date(2012, 5, 18); // Month is 0-indexed (5 = June)
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            document.getElementById('ageDisplay').textContent = age + ' Years';
+        }
+        calculateAge();
+
+        // Animated Typing Subtitle Effect
+        const phrases = [
+            "an Aspiring Software Engineer.",
+            "a Cyber Security Enthusiast.",
+            "a Python & HTML Developer.",
+            "an Athletics Medalist."
+        ];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingSpeed = 90;
+        const deletingSpeed = 45;
+        const delayBetweenPhrases = 1800;
+
+        function typeEffect() {
+            const currentPhrase = phrases[phraseIndex];
+            const targetElement = document.getElementById('typingText');
+
+            if (isDeleting) {
+                targetElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                targetElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                isDeleting = true;
+                setTimeout(typeEffect, delayBetweenPhrases);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                setTimeout(typeEffect, 300);
+            } else {
+                setTimeout(typeEffect, isDeleting ? deletingSpeed : typingSpeed);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', typeEffect);
+
+        // Theme Accent Switcher
+        function setTheme(theme) {
+            const root = document.documentElement;
+            if (theme === 'cyan') {
+                root.style.setProperty('--accent-color', '#06b6d4');
+                document.getElementById('heroName').className = "text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-400";
+            } else if (theme === 'emerald') {
+                root.style.setProperty('--accent-color', '#10b981');
+                document.getElementById('heroName').className = "text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-400";
+            } else if (theme === 'purple') {
+                root.style.setProperty('--accent-color', '#a855f7');
+                document.getElementById('heroName').className = "text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-400";
+            }
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.className = 'fa-solid fa-bars text-xl';
+            } else {
+                icon.className = 'fa-solid fa-xmark text-xl';
+            }
+        }
+
+        // Handle Quick Contact Form Submission
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('formName').value;
+            const email = document.getElementById('formEmail').value;
+            const subject = document.getElementById('formSubject').value;
+            const message = document.getElementById('formMessage').value;
+
+            // Open mailto link as fallback action
+            const mailtoUrl = `mailto:joyaljke1@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("From: " + name + " (" + email + ")\n\n" + message)}`;
+            
+            const statusDiv = document.getElementById('formStatus');
+            statusDiv.className = "mt-4 p-4 rounded-xl font-mono text-sm bg-cyan-950/80 border border-cyan-500/50 text-cyan-300 block";
+            statusDiv.innerHTML = `<i class="fa-solid fa-check-circle mr-2"></i> Launching your email client... If it doesn't open, email directly to <strong class="underline">joyaljke1@gmail.com</strong>`;
+
+            window.location.href = mailtoUrl;
+        }
+
+        // Background Particle Canvas effect
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const particles = [];
+        const particleCount = 40;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.alpha = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(6, 182, 212, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    </script>
+</body>
+</html>
+```
